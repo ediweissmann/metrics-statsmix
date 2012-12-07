@@ -13,7 +13,7 @@ Can be scheduled to report every hour.
 Build and install
 -----------------
 Maven dependency is not published to Maven Central yet. If you wish to have it there, just raise an issue.
-To generate the jar, clone the repository and run mvn install.
+To generate the jar file, `git clone` the repository and run `mvn install`.
 
     git clone git://github.com/ediweissmann/metrics-statsmix.git
     cd metrics-statsmix && mvn clean install
