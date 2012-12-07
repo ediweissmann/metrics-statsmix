@@ -16,18 +16,17 @@
 package com.ediweissmann.statsmix
 
 import collection.mutable
-import java.util.concurrent.atomic.AtomicInteger
 
 object TestStatsMixClient extends StatsMixClient {
   private val tracked = mutable.Map[String, String]()
-  private val count = new AtomicInteger(0)
+  private var count = 0
 
-  def callsCount() = count.intValue()
+  def callsCount() = count
   def trackedMetrics() = tracked
 
   override def track(name: String, value: Number) = {
     tracked.put(name, value.toString)
-    count.incrementAndGet()
+    count += 1
     Left()
   }
 
