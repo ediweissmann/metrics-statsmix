@@ -53,10 +53,15 @@ class StatsMixReporter(client: StatsMixClient) extends AbstractPollingReporter(M
   }
 
   override def processHistogram(metricName: MetricName, histogram: Histogram, context: String) {
-    track(histogram.getSnapshot.get95thPercentile(), "95thPercentile", metricName, context)
+    track(histogram.count(), "count", metricName, context)
+    track(histogram.min(), "min", metricName, context)
+    track(histogram.max(), "max", metricName, context)
+    track(histogram.getSnapshot.get75thPercentile(), "75thPercentile", metricName, context)
   }
 
   override def processTimer(metricName: MetricName, timer: Timer, context: String) {
+    track(timer.min(), "min", metricName, context)
+    track(timer.max(), "max", metricName, context)
     track(timer.mean(), "mean", metricName, context)
   }
 

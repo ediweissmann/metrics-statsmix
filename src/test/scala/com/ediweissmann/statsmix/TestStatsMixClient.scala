@@ -18,14 +18,14 @@ package com.ediweissmann.statsmix
 import collection.mutable
 
 object TestStatsMixClient extends StatsMixClient {
-  private val tracked = mutable.Map[String, String]()
+  private val tracked = mutable.Map[String, Double]()
   private var count = 0
 
   def callsCount() = count
   def trackedMetrics() = tracked
 
   override def track(name: String, value: Number) = {
-    tracked.put(name, value.toString)
+    tracked.put(name, value.doubleValue())
     count += 1
     Left()
   }

@@ -23,39 +23,57 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class StatsMixReporterTest extends FunSuite with ShouldMatchers with TestMetrics with BeforeAndAfterEach {
 
-  // run it
+  // run the reporter
   new StatsMixReporter(TestStatsMixClient).run()
-
-  val reportedMetrics = TestStatsMixClient.trackedMetrics
   TestStatsMixClient.print()
 
+  val reportedMetrics = TestStatsMixClient.trackedMetrics
+
   test("gauges") {
-    reportedMetrics should contain key (asMetricKey("GAUGE_NAME.value"))
-    reportedMetrics should contain value ("1")
+    shouldContainMetric("GAUGE_NAME.value", 1)
   }
 
   test("gauges with non-number values") {
-    reportedMetrics should not contain key(asMetricKey("NON_NUMBER_GAUGE_NAME"))
+    reportedMetrics should not contain key(asMetricKey("NON_NUMBER_GAUGE_NAME.value"))
   }
 
   test("counters") {
-    reportedMetrics should contain key (asMetricKey("COUNTER_NAME.count"))
-    reportedMetrics should contain value ("10")
+    shouldContainMetric("COUNTER_NAME.count", 10)
   }
 
   test("meters") {
-    reportedMetrics should contain key (asMetricKey("METER_NAME.meanRate"))
-    // how can I expect a fixed value?
+    shouldContainMetric("METER_NAME.meanRate", 3.0 plusOrMinus (0.5))
   }
 
   test("Histograms") {
-    reportedMetrics should contain key (asMetricKey("HISTOGRAM_NAME.95thPercentile"))
-    reportedMetrics should contain value ("100.0")
+    shouldContainMetric("HISTOGRAM_NAME.75thPercentile", 500)
+    shouldContainMetric("HISTOGRAM_NAME.min", 100)
+    shouldContainMetric("HISTOGRAM_NAME.max", 500)
+    shouldContainMetric("HISTOGRAM_NAME.count", 2)
   }
 
   test("timer") {
-    reportedMetrics should contain key (asMetricKey("TIMER_NAME.mean"))
+    shouldContainMetric("TIMER_NAME.min", 200.0 plusOrMinus (2.0))
+    shouldContainMetric("TIMER_NAME.max", 400.0 plusOrMinus(2.0))
+    shouldContainMetric("TIMER_NAME.mean")
   }
 
-  private def asMetricKey(name: String) = classOf[StatsMixReporterTest].getSimpleName + "." + name
+  private def asMetricKey(name: String) = {
+    classOf[StatsMixReporterTest].getSimpleName + "." + name
+  }
+
+  private def shouldContainMetric(shortKey: String) {
+    reportedMetrics should contain key (asMetricKey(shortKey))
+  }
+
+  private def shouldContainMetric(shortKey: String, value: Number) {
+    shouldContainMetric(shortKey)
+    reportedMetrics(asMetricKey(shortKey)) should be(value.doubleValue())
+  }
+
+  private def shouldContainMetric(shortKey: String, tolerance: StatsMixReporterTest.this.type#DoubleTolerance) {
+    shouldContainMetric(shortKey)
+    reportedMetrics(asMetricKey(shortKey)) should be(tolerance)
+  }
+
 }

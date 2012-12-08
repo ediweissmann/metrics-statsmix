@@ -31,6 +31,6 @@ class StatsMixReporterPeriodicRunTest extends FunSuite with ShouldMatchers with 
     Thread.sleep(3500)
     reporter.shutdown()
 
-    TestStatsMixClient.callsCount() should be(5 /*metrics*/ * 3 /*seconds*/)
+    TestStatsMixClient.callsCount() should be(10 /*metrics*/ * 3 /*seconds*/)
   }
 }

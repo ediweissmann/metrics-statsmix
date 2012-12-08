@@ -43,11 +43,16 @@ trait TestMetrics extends Instrumented {
   def histogram = metrics.histogram("HISTOGRAM_NAME")
 
   histogram += 100
+  histogram += 500
 
   // timer
   def timer = metrics.timer("TIMER_NAME")
 
   timer.time {
-    Thread.sleep(42)
+    Thread.sleep(200)
+  }
+
+  timer.time {
+    Thread.sleep(400)
   }
 }
