@@ -1,4 +1,4 @@
-metrics-statsmix
+metrics-statsmix [![Build Status](https://secure.travis-ci.org/ediweissmann/metrics-statsmix.png?branch=master)](http://travis-ci.org/ediweissmann/metrics-statsmix)
 ================
 
 [Codahale metrics](https://github.com/codahale/metrics) reporter that sends metrics to [statsmix.com](http://statsmix.com)
