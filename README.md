@@ -12,8 +12,24 @@ Can be scheduled to report every hour.
 
 Build and install
 -----------------
-Maven dependency is not published to Maven Central yet. If you wish to have it there, just raise an issue.
-To generate the jar file, `git clone` the repository and run `mvn install`.
+Maven release version dependency is not published to Maven Central yet. If you wish to have it there, just raise an issue.
+To use the latest snapshot version, use the following repository and dependency:
 
-    git clone git://github.com/ediweissmann/metrics-statsmix.git
-    cd metrics-statsmix && mvn clean install
+```
+<repository>
+	<id>oss-sonatype-snapshots</id>
+    <name>OSS Sonatype snapshots</name>
+    <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+    <snapshots>
+    	<enabled>true</enabled>
+    </snapshots>
+</repository>	
+```
+    
+```
+<dependency>
+	<groupId>com.ediweissmann.metrics</groupId>
+    <artifactId>metrics-statsmix</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
